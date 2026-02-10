@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Adventure Begins</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --bg-start:#0b0000;
+      --bg-end:#3a0000;
+      --accent:#ff2d4b;
+      --muted:#ffe6ea;
+      --btn-click:#ffb3c0;
+    }
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(140deg,var(--bg-start),var(--bg-end));color:var(--muted);overflow:hidden}
+    .wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:28px;box-sizing:border-box}
+    h1{font-size:2.8rem;margin:0;color:var(--accent);text-shadow:0 6px 30px rgba(255,45,75,0.12);animation:glow 2s ease-in-out infinite alternate}
+    @keyframes glow{from{text-shadow:0 6px 18px rgba(255,45,75,0.12)}to{text-shadow:0 12px 40px rgba(255,209,102,0.25)}}
+    p.lead{margin-top:18px;font-size:1.25rem;color:#ffd6dc}
+    .start-btn{margin-top:28px;background:var(--accent);color:#111;border:none;padding:12px 22px;border-radius:14px;font-weight:800;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,0.6);transition:transform .12s ease, background .12s ease}
+    .start-btn:active{transform:translateY(2px)}
+    .start-btn.clicked{background:var(--btn-click); color:#111; transform:scale(1.02)}
+    .heart{position:fixed;bottom:-60px;font-size:22px;animation:floatUp 7s linear infinite;pointer-events:none}
+    .heart:nth-of-type(1){left:10%;animation-delay:0s}
+    .heart:nth-of-type(2){left:34%;animation-delay:1.8s}
+    .heart:nth-of-type(3){left:58%;animation-delay:3.6s}
+    .heart:nth-of-type(4){left:82%;animation-delay:5.2s}
+    @keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:1}50%{opacity:.85}100%{transform:translateY(-720px) scale(.85);opacity:0}}
+    @media (max-width:520px){h1{font-size:1.8rem}.lead{font-size:1rem}}
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-labelledby="finalTitle">
+    <h1 id="finalTitle">Happy 1st Year Valentine’s Day Mr. Husband</h1>
+    <p class="lead">...and the adventure begins!!! ✈️🔥❤️</p>
+    <button id="celebrateBtn" class="start-btn">Celebrate</button>
+  </div>
+
+  <div class="heart">💖</div>
+  <div class="heart">💕</div>
+  <div class="heart">❤️</div>
+  <div class="heart">💘</div>
+
+  <script>
+    const celebrateBtn = document.getElementById('celebrateBtn');
+    celebrateBtn.addEventListener('click', () => {
+      celebrateBtn.classList.add('clicked');
+      celebrateBtn.textContent = 'Let the adventure begin';
+      celebrateBtn.disabled = true;
+    });
+  </script>
+</body>
+</html>
