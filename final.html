@@ -5,10 +5,10 @@
   <title>Adventure Begins</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    body{background:linear-gradient(140deg,#0b0000,#3a0000);color:#ffe6ea;font-family:Inter,Arial,sans-serif;text-align:center}
+    body{background:linear-gradient(140deg,#0b0000,#3a0000);color:#ffe6ea;font-family:Inter,Arial,sans-serif;text-align:center;margin:0;padding:40px}
     h1{color:#ff2d4b;font-size:2.8rem}
     .start-btn{margin-top:28px;background:#ff2d4b;color:#111;border:none;padding:12px 22px;border-radius:14px;font-weight:800;cursor:pointer}
-    .share-btn{background:#ff2d4b;color:#111;border:none;padding:10px 16px;border-radius:12px;cursor:pointer;font-weight:700;margin-top:18px}
+    .share-btn{margin-top:20px;padding:10px 16px;border:none;border-radius:12px;background:#ff2d4b;color:#111;font-weight:700;cursor:pointer}
     .share-note{margin-left:12px;color:#ffd6dc;display:none}
   </style>
 </head>
@@ -16,11 +16,25 @@
   <h1>Happy Valentine’s Day Mr. Husband</h1>
   <p>...and the adventure begins!!! ✈️🔥❤️</p>
   <button id="celebrateBtn" class="start-btn">Celebrate</button>
-  <div class="share-wrap">
+  <div>
     <button id="shareBtn" class="share-btn">Share this page</button>
     <span id="shareNote" class="share-note">Link copied</span>
   </div>
 
-  <!-- Background music -->
-  <iframe width="0" height="0"
-    src="https://www.youtube.com/embed/
+  <!-- Background music with controls -->
+  <iframe width="300" height="80"
+    src="https://www.youtube.com/embed/NW6Dgax2d6I?autoplay=1&loop=1&playlist=NW6Dgax2d6I"
+    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+  </iframe>
+
+  <script>
+    const celebrateBtn=document.getElementById('celebrateBtn');
+    celebrateBtn.addEventListener('click',()=>{
+      celebrateBtn.textContent='Let the adventure begin';
+      celebrateBtn.disabled=true;
+    });
+    const shareBtn=document.getElementById('shareBtn');
+    const shareNote=document.getElementById('shareNote');
+    shareBtn.addEventListener('click',async()=>{
+      const url=location.href;
+      if(navigator.share){try{await navigator.share({title:document.title
