@@ -5,49 +5,30 @@
   <title>Valentine's Day — Sweetheart</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    :root{
-      --bg-start:#000;
-      --bg-end:#2b0000;
-      --accent:#ff2d4b;
-      --muted:#ffd6dc;
-      --cta-bg:linear-gradient(180deg,#2a0000,#8b0000);
-      --cta-click:#ff4d6d;
-      --share-bg:#ff2d4b;
-      --share-text:#111;
-    }
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(120deg,var(--bg-start),var(--bg-end));color:var(--muted);overflow:hidden}
-    .container{max-width:980px;margin:48px auto;padding:28px;text-align:center}
-    h1{font-size:2.6rem;margin:8px 0;color:var(--accent)}
-    p.lead{color:#ffdfe6;margin-top:6px}
-    .cta{margin-top:28px;background:var(--cta-bg);color:#fff;border:none;padding:14px 26px;border-radius:26px;font-weight:700;cursor:pointer}
-    .cta:hover{transform:translateY(-4px)}
-    .cta.clicked{background:var(--cta-click);color:#111}
-    .share-wrap{margin-top:18px}
-    .share-btn{background:var(--share-bg);color:var(--share-text);border:none;padding:10px 16px;border-radius:12px;cursor:pointer;font-weight:700}
+    body{background:linear-gradient(120deg,#000,#2b0000);color:#ffd6dc;font-family:Inter,Arial,sans-serif;text-align:center;margin:0;padding:40px}
+    h1{color:#ff2d4b}
+    .cta{margin-top:20px;padding:12px 24px;border:none;border-radius:20px;background:#8b0000;color:#fff;font-weight:700;cursor:pointer}
+    .share-btn{margin-top:20px;padding:10px 16px;border:none;border-radius:12px;background:#ff2d4b;color:#111;font-weight:700;cursor:pointer}
     .share-note{margin-left:12px;color:#ffd6dc;display:none}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Happy Valentine’s Day</h1>
-    <p class="lead">For my husband — bold, fierce, and full of love</p>
-    <button id="whatsHere" class="cta">What’s here</button>
-    <div class="share-wrap">
-      <button id="shareBtn" class="share-btn">Share this page</button>
-      <span id="shareNote" class="share-note">Link copied</span>
-    </div>
+  <h1>Happy Valentine’s Day</h1>
+  <p>For my husband — bold, fierce, and full of love</p>
+  <button class="cta" onclick="location.href='todo.html'">What’s here</button>
+
+  <div>
+    <button id="shareBtn" class="share-btn">Share this page</button>
+    <span id="shareNote" class="share-note">Link copied</span>
   </div>
 
-  <!-- Background music -->
-  <iframe width="0" height="0"
-    src="https://www.youtube.com/embed/5ZD9_spFojY?autoplay=1&loop=1&playlist=5ZD9_spFojY"
-    frameborder="0" allow="autoplay">
+  <!-- Background music with controls -->
+  <iframe width="300" height="80"
+    src="https://www.youtube.com/embed/NW6Dgax2d6I?autoplay=1&loop=1&playlist=NW6Dgax2d6I"
+    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
   </iframe>
 
   <script>
-    document.getElementById('whatsHere').addEventListener('click',()=>{
-      location.href='todo.html';
-    });
     const shareBtn=document.getElementById('shareBtn');
     const shareNote=document.getElementById('shareNote');
     shareBtn.addEventListener('click',async()=>{
