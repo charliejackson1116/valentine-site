@@ -2,73 +2,274 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Valentine's To-Do List</title>
+  <title>Valentine's To-Do List — Hover to Reveal</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    body{background:linear-gradient(120deg,#000,#8b0000);color:#fff;font-family:Inter,Arial,sans-serif;text-align:center;margin:0;padding:40px}
-    h2{color:#ff4d6d}
-    .pill{margin:10px;padding:12px 20px;border-radius:18px;cursor:pointer;font-weight:700}
-    .naughty{background:#8b0000;color:#fff}
-    .romantic{background:#ff4d6d;color:#fff}
-    .fun{background:#ff0000;color:#fff}
-    .option-card{display:none;margin-top:12px;padding:12px;background:rgba(255,255,255,0.05);border-radius:12px}
-    .share-btn{margin-top:20px;padding:10px 16px;border:none;border-radius:12px;background:#ff2d4b;color:#111;font-weight:700;cursor:pointer}
-    .share-note{margin-left:12px;color:#ffd6dc;display:none}
+    :root{
+      --bg-start:#000;
+      --bg-end:#8b0000;
+      --accent:#ff4d6d;
+      --muted:#ffdde1;
+      --card: rgba(255,255,255,0.03);
+      --pill-click:#ff9aa2;
+      --confirm-click:#ffb3c0;
+      --pill-radius:18px;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter, system-ui, Arial, sans-serif;
+      background: linear-gradient(120deg,var(--bg-start),var(--bg-end));
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:36px auto;
+      padding:24px;
+      text-align:center;
+    }
+
+    h2{
+      margin:6px 0 18px;
+      font-size:28px;
+      color:var(--accent);
+    }
+
+    /* row of category "pills" */
+    .btn-row{
+      display:flex;
+      justify-content:center;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .category{
+      display:inline-block;
+      position:relative;
+      min-width:200px;
+      text-align:center;
+    }
+
+    .pill{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      padding:12px 18px;
+      border-radius:var(--pill-radius);
+      cursor:pointer;
+      font-weight:700;
+      transition:transform .12s ease, background .12s ease, color .12s ease;
+      user-select:none;
+    }
+    .pill:hover{ transform:translateY(-4px); }
+
+    .pill.naughty{ background:linear-gradient(180deg,#2b0000,#8b0000); color:#fff; }
+    .pill.romantic{ background:linear-gradient(180deg,#3a0a0a,#ff4d6d); color:#fff; }
+    .pill.fun{ background:linear-gradient(180deg,#4a0000,#ff0000); color:#fff; }
+
+    /* option card (hidden by default) */
+    .option-card{
+      position:absolute;
+      top:calc(100% + 12px);
+      left:50%;
+      transform:translateX(-50%);
+      width:320px;
+      max-width:calc(100vw - 40px);
+      background: rgba(255,255,255,0.04);
+      border-radius:12px;
+      padding:12px 14px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      display:none; /* shown on hover */
+      z-index:30;
+      text-align:left;
+    }
+
+    .option-card h3{ margin:0 0 8px 0; color:var(--accent); font-size:16px; }
+    .option-card p{ margin:8px 0; font-size:14px; }
+
+    /* show options when hovering the category container */
+    .category:hover .option-card{
+      display:block;
+      animation:fadeInUp .18s ease-out;
+    }
+
+    @keyframes fadeInUp{
+      from{ transform:translateX(-50%) translateY(6px); opacity:0 }
+      to{ transform:translateX(-50%) translateY(0); opacity:1 }
+    }
+
+    /* consent and confirm */
+    .consent-wrap{
+      margin-top:160px; /* push down so options have room */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      color:var(--accent);
+      font-weight:700;
+    }
+    .consent-wrap input[type="checkbox"]{ width:18px; height:18px; accent-color:var(--accent); cursor:pointer; }
+
+    .confirm-btn{
+      margin-top:18px;
+      background:var(--accent);
+      color:#111;
+      border:none;
+      padding:12px 22px;
+      border-radius:14px;
+      font-weight:800;
+      cursor:pointer;
+      transition:transform .12s ease, background .12s ease;
+    }
+    .confirm-btn.clicked{ background:var(--confirm-click); color:#111; transform:scale(1.02); }
+
+    .msg{ margin-top:12px; color:#ffd6dc; min-height:20px; font-size:14px; }
+
+    /* floating hearts */
+    .heart{ position:fixed; bottom:-60px; font-size:22px; animation:floatUp 7s linear infinite; pointer-events:none; }
+    .heart:nth-of-type(1){ left:20%; animation-delay:0s; }
+    .heart:nth-of-type(2){ left:45%; animation-delay:2s; }
+    .heart:nth-of-type(3){ left:70%; animation-delay:4s; }
+    @keyframes floatUp{ 0%{ transform:translateY(0) scale(1); opacity:1 } 100%{ transform:translateY(-720px) scale(.85); opacity:0 } }
+
+    /* responsive */
+    @media (max-width:880px){
+      .option-card{ position:static; transform:none; width:100%; margin-top:12px; display:none; }
+      .category:hover .option-card{ display:block; }
+      .options-grid{ display:block; }
+      .btn-row{ gap:12px; }
+    }
   </style>
 </head>
 <body>
-  <h2>Choose Your Valentine’s Adventure 💌</h2>
-  <div>
-    <div class="pill naughty" onmouseover="show('naughty')">🔥 Naughty & Sexy</div>
-    <div id="naughty" class="option-card">
-      <p>💋 Spontaneous Locations</p>
-      <p>🔥 Edging</p>
+  <div class="wrap" role="main" aria-labelledby="title">
+    <h2 id="title">I have few things Planned for this Valentine’s Day 💌</h2>
+<h3>Checklist</h3>
+    <div class="btn-row" role="tablist" aria-label="Adventure categories">
+      <!-- Naughty -->
+      <div class="category" id="cat-naughty">
+        <div class="pill naughty" role="button" tabindex="0" aria-expanded="false" aria-controls="naughtyCard">
+          🔥 Naughty &amp; Sexy
+        </div>
+        <div id="naughtyCard" class="option-card" role="region" aria-hidden="true">
+          <h3>🔥 Naughty &amp; Sexy Options</h3>
+          <p>💋 <strong>Spontaneous Locations</strong></p>
+          <p>🔥 <strong>Edging</strong></p>
+        </div>
+      </div>
+
+      <!-- Romantic -->
+      <div class="category" id="cat-romantic">
+        <div class="pill romantic" role="button" tabindex="0" aria-expanded="false" aria-controls="romanticCard">
+          ❤️ Romantic &amp; Tender
+        </div>
+        <div id="romanticCard" class="option-card" role="region" aria-hidden="true">
+          <h3>❤️ Romantic &amp; Tender Options</h3>
+          <p>💃 <strong>Dancing in the Kitchen</strong></p>
+          <p>🛁 <strong>Bubble Bath for Two</strong></p>
+        </div>
+      </div>
+
+      <!-- Fun -->
+      <div class="category" id="cat-fun">
+        <div class="pill fun" role="button" tabindex="0" aria-expanded="false" aria-controls="funCard">
+          ✈️ Fun &amp; Adventurous
+        </div>
+        <div id="funCard" class="option-card" role="region" aria-hidden="true">
+          <h3>✈️ Fun &amp; Adventurous Options</h3>
+          <p>🚗 <strong>Unplanned Road Trip</strong></p>
+          <p>📚 <strong>Take a Class Together</strong></p>
+        </div>
+      </div>
     </div>
-    <div class="pill romantic" onmouseover="show('romantic')">❤️ Romantic & Tender</div>
-    <div id="romantic" class="option-card">
-      <p>💃 Dancing in the Kitchen</p>
-      <p>🛁 Bubble Bath for Two</p>
+
+    <div class="consent-wrap">
+      <input id="agree" type="checkbox" />
+      <label for=" I agree">By clicking “I Agree,” you commit to being my Valentine forever and embracing these conditions with love and passion.</label>
     </div>
-    <div class="pill fun" onmouseover="show('fun')">✈️ Fun & Adventurous</div>
-    <div id="fun" class="option-card">
-      <p>🚗 Unplanned Road Trip</p>
-      <p>📚 Take a Class Together</p>
+
+    <div>
+      <button id="confirmBtn" class="confirm-btn">Confirm</button>
     </div>
+
+    <div class="msg" id="message" aria-live="assertive"></div>
   </div>
 
-  <div>
-    <input id="agree" type="checkbox"> I agree to be my wife’s Valentine forever 💕
-    <button onclick="confirmChoice()">Confirm</button>
-  </div>
-
-  <div>
-    <button id="shareBtn" class="share-btn">Share this page</button>
-    <span id="shareNote" class="share-note">Link copied</span>
-  </div>
-
-  <!-- Background music with controls -->
-  <iframe width="300" height="80"
-    src="https://www.youtube.com/embed/NW6Dgax2d6I?autoplay=1&loop=1&playlist=NW6Dgax2d6I"
-    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-  </iframe>
+  <!-- floating hearts -->
+  <div class="heart">💖</div>
+  <div class="heart">💕</div>
+  <div class="heart">❤️</div>
 
   <script>
-    function show(id){
-      document.querySelectorAll('.option-card').forEach(el=>el.style.display='none');
-      document.getElementById(id).style.display='block';
+    // Accessibility / touch fallback:
+    // On touch devices or keyboard users, clicking a pill toggles its option card.
+    const categories = [
+      { btnId: 'cat-naughty', cardId: 'naughtyCard' },
+      { btnId: 'cat-romantic', cardId: 'romanticCard' },
+      { btnId: 'cat-fun', cardId: 'funCard' }
+    ];
+
+    function hideAllCards() {
+      categories.forEach(c => {
+        const card = document.getElementById(c.cardId);
+        const container = document.getElementById(c.btnId);
+        const pill = container.querySelector('.pill');
+        if (card) { card.style.display = 'none'; card.setAttribute('aria-hidden','true'); }
+        if (pill) { pill.setAttribute('aria-expanded','false'); pill.classList.remove('clicked'); }
+      });
     }
-    function confirmChoice(){
-      if(document.getElementById('agree').checked){
-        location.href='final.html';
-      }else{alert('Please agree first');}
-    }
-    const shareBtn=document.getElementById('shareBtn');
-    const shareNote=document.getElementById('shareNote');
-    shareBtn.addEventListener('click',async()=>{
-      const url=location.href;
-      if(navigator.share){try{await navigator.share({title:document.title,url});return;}catch(e){}}
-      try{await navigator.clipboard.writeText(url);shareNote.style.display='inline';setTimeout(()=>shareNote.style.display='none',3000);}catch(e){shareNote.textContent=url;shareNote.style.display='inline';}
+
+    // Toggle on click (useful for touch and keyboard)
+    categories.forEach(c => {
+      const container = document.getElementById(c.btnId);
+      const pill = container.querySelector('.pill');
+      const card = document.getElementById(c.cardId);
+
+      // click / keypress handler
+      function toggle(e){
+        // prevent default for keyboard Enter/Space
+        if (e.type === 'keydown' && !(e.key === 'Enter' || e.key === ' ')) return;
+        const isVisible = card.style.display === 'block';
+        hideAllCards();
+        if (!isVisible) {
+          card.style.display = 'block';
+          card.setAttribute('aria-hidden','false');
+          pill.setAttribute('aria-expanded','true');
+          pill.classList.add('clicked');
+        }
+      }
+
+      pill.addEventListener('click', toggle);
+      pill.addEventListener('keydown', toggle);
     });
+
+    // Confirm behavior: require checkbox; change color when clicked and redirect
+    const confirmBtn = document.getElementById('confirmBtn');
+    const agreeBox = document.getElementById('agree');
+    const message = document.getElementById('message');
+
+    confirmBtn.addEventListener('click', () => {
+      if (!agreeBox.checked) {
+        message.textContent = "Please check the box to continue our Valentine’s journey 💌";
+        agreeBox.focus();
+        agreeBox.style.outline = '2px solid rgba(255,77,109,0.35)';
+        setTimeout(()=> agreeBox.style.outline = '', 900);
+        return;
+      }
+      confirmBtn.classList.add('clicked');
+      message.textContent = "Confirmed — redirecting...";
+      setTimeout(()=> location.href = 'final.html', 350);
+    });
+
+    // Initialize: hide all option cards (they will still appear on hover via CSS)
+    hideAllCards();
   </script>
 </body>
 </html>
